@@ -243,6 +243,20 @@ echo -e "  Generando openagent.md..."
 sed "s|{{HOME}}|${HOME}|g" "$SCRIPT_DIR/templates/agent/core/openagent.md" > "$CONFIG_DIR/agent/core/openagent.md"
 echo -e "  ✓ openagent.md generado"
 
+# ── 4b. Install context files ─────────────────────────────────
+echo -e "  Instalando context files..."
+CONTEXT_SRC="$SCRIPT_DIR/templates/context"
+if [ -d "$CONTEXT_SRC" ]; then
+    find "$CONTEXT_SRC" -name "*.md" | while read f; do
+        rel="${f#$CONTEXT_SRC/}"
+        mkdir -p "$CONFIG_DIR/context/$(dirname "$rel")"
+        sed "s|{{HOME}}|${HOME}|g" "$f" > "$CONFIG_DIR/context/$rel"
+    done
+    echo -e "  ✓ Context files instalados ($(find "$CONTEXT_SRC" -name '*.md' | wc -l) archivos)"
+else
+    echo -e "  ${YELLOW}⚠ No se encontraron templates de context${NC}"
+fi
+
 # ── 5. Validate ───────────────────────────────────────────────
 echo -e "\n${YELLOW}🔍 Validando config...${NC}"
 if [ -f "$CONFIG_DIR/opencode.json" ]; then

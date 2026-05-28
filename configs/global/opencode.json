@@ -239,7 +239,7 @@
   },
   "lsp": {
     "csharp": {
-      "command": ["lsp-mcp"],
+      "command": ["omnisharp", "-lsp"],
       "extensions": [".cs"]
     },
     "razor": {

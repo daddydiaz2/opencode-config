@@ -1,0 +1,39 @@
+name: Test Installation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run install script
+        run: chmod +x install.sh && ./install.sh
+
+      - name: Verify configs exist
+        run: |
+          test -f ~/.config/opencode/opencode.json
+          test -f ~/.config/opencode/agent/core/openagent.md
+
+      - name: Run detect frameworks
+        run: chmod +x detect-frameworks.sh && ./detect-frameworks.sh .
+
+      - name: Verify .opencode created
+        run: test -d .opencode
+
+      - name: Test LSP installation
+        run: |
+          npm list -g pyright
+          npm list -g intelephense
+          npm list -g bash-language-server

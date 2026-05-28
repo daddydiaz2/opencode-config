@@ -1,0 +1,366 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-antigravity-auth@latest"],
+  "provider": {
+    "google": {
+      "models": {
+        "antigravity-gemini-3-pro": {
+          "name": "Gemini 3 Pro (Antigravity)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "low": { "thinkingLevel": "low" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
+        "antigravity-gemini-3.1-pro": {
+          "name": "Gemini 3.1 Pro (Antigravity)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "low": { "thinkingLevel": "low" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
+        "antigravity-gemini-3-flash": {
+          "name": "Gemini 3 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "minimal": { "thinkingLevel": "minimal" },
+            "low": { "thinkingLevel": "low" },
+            "medium": { "thinkingLevel": "medium" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
+        "antigravity-claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 (Antigravity)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        },
+        "antigravity-claude-opus-4-6-thinking": {
+          "name": "Claude Opus 4.6 Thinking (Antigravity)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          },
+          "variants": {
+            "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
+            "max": { "thinkingConfig": { "thinkingBudget": 32768 } }
+          }
+        },
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        },
+        "gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        },
+        "gemini-3-flash-preview": {
+          "name": "Gemini 3 Flash Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        },
+        "gemini-3-pro-preview": {
+          "name": "Gemini 3 Pro Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        },
+        "gemini-3.1-pro-preview": {
+          "name": "Gemini 3.1 Pro Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        },
+        "gemini-3.1-pro-preview-customtools": {
+          "name": "Gemini 3.1 Pro Preview Custom Tools (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"]
+          }
+        }
+      }
+    }
+  },
+  "reference": {
+    "dotnet": {
+      "repository": "dotnet/docs",
+      "branch": "main"
+    },
+    "aspnetcore": {
+      "repository": "dotnet/AspNetCore.Docs",
+      "branch": "main"
+    },
+    "blazor": {
+      "repository": "dotnet/AspNetCore.Docs",
+      "branch": "main"
+    }
+  },
+  "command": {
+    "build": {
+      "template": "Ejecuta: dotnet build --configuration Release",
+      "description": "Compilar el proyecto Release"
+    },
+    "build-debug": {
+      "template": "Ejecuta: dotnet build --configuration Debug",
+      "description": "Compilar el proyecto Debug"
+    },
+    "test": {
+      "template": "Ejecuta: dotnet test --configuration Release --no-build",
+      "description": "Ejecutar tests (Requiere build previo)"
+    },
+    "test-all": {
+      "template": "Ejecuta: dotnet test --configuration Release",
+      "description": "Compilar y ejecutar todos los tests"
+    },
+    "run": {
+      "template": "Ejecuta: dotnet run",
+      "description": "Iniciar la aplicación"
+    },
+    "migration": {
+      "template": "Crea una migración de EF Core: dotnet ef migrations add {0}",
+      "description": "Crear migración EF Core: /migration NombreMigration"
+    },
+    "database-update": {
+      "template": "Ejecuta: dotnet ef database update",
+      "description": "Aplicar migraciones pendientes"
+    },
+    "restore": {
+      "template": "Ejecuta: dotnet restore",
+      "description": "Restaurar paquetes NuGet"
+    },
+    "clean": {
+      "template": "Ejecuta: dotnet clean",
+      "description": "Limpiar la solución"
+    },
+    "add-package": {
+      "template": "Agrega un paquete NuGet: dotnet add package {0}",
+      "description": "Agregar paquete NuGet: /add-package NombrePaquete"
+    },
+    "scaffold": {
+      "template": "Scaffoldea un controller con EF: dotnet aspnet-codegenerator controller -name {0}Controller -m {1} -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --referenceScriptLibraries",
+      "description": "Scaffold: /scaffold NombreController NombreModelo"
+    },
+    "info": {
+      "template": "Muestra información del proyecto: SDK, paquetes, estructura y configuración actual",
+      "description": "Mostrar info del proyecto"
+    },
+    "blazor-component": {
+      "template": "Crea un componente Blazor: dotnet new razorcomponent -n {0} -o Pages",
+      "description": "Crear componente Blazor: /blazor-component NombreComponente"
+    },
+    "blazor-page": {
+      "template": "Crea una página Blazor: dotnet new page -n {0} -o Pages",
+      "description": "Crear página Blazor: /blazor-page NombrePagina"
+    },
+    "blazor-wasm": {
+      "template": "Crea un proyecto Blazor WASM: dotnet new blazorwasm -n {0}",
+      "description": "Crear proyecto Blazor WASM: /blazor-wasm NombreProyecto"
+    },
+    "blazor-server": {
+      "template": "Crea un proyecto Blazor Server: dotnet new blazorserver -n {0}",
+      "description": "Crear proyecto Blazor Server: /blazor-server NombreProyecto"
+    },
+    "classlib": {
+      "template": "Crea una librería de clases: dotnet new classlib -n {0}",
+      "description": "Crear librería de clases: /classlib NombreLibreria"
+    },
+    "solution": {
+      "template": "Crea una solución: dotnet new sln -n {0}",
+      "description": "Crear solución: /solution NombreSolucion"
+    },
+    "publish": {
+      "template": "Publica el proyecto: dotnet publish --configuration Release -o ./publish",
+      "description": "Publicar la aplicación"
+    },
+    "watch": {
+      "template": "Ejecuta: dotnet watch run",
+      "description": "Ejecutar con hot-reload (dotnet watch)"
+    },
+    "nuget-search": {
+      "template": "Busca paquetes NuGet: dotnet package search {0}",
+      "description": "Buscar paquete NuGet: /nuget-search termino"
+    }
+  },
+  "formatter": {
+    "dotnet-format": {
+      "command": ["dotnet", "format", "--no-restore", "--include", "$FILE"],
+      "extensions": [".cs"]
+    },
+    "prettier": {
+      "command": ["prettier", "--write", "$FILE"],
+      "extensions": [
+        ".html",
+        ".cshtml",
+        ".razor",
+        ".css",
+        ".scss",
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".json",
+        ".yaml",
+        ".yml",
+        ".md"
+      ]
+    }
+  },
+  "lsp": {
+    "csharp": {
+      "command": ["lsp-mcp"],
+      "extensions": [".cs"]
+    },
+    "razor": {
+      "command": ["/home/daniel/.local/share/fnm/node-versions/v24.16.0/installation/lib/node_modules/vscode-html-languageserver-bin/html-server.js", "--stdio"],
+      "extensions": [".razor", ".cshtml"]
+    },
+    "html": {
+      "command": ["/home/daniel/.local/share/fnm/node-versions/v24.16.0/installation/lib/node_modules/vscode-html-languageserver-bin/html-server.js", "--stdio"],
+      "extensions": [".html"]
+    },
+    "css": {
+      "command": ["/home/daniel/.local/share/fnm/node-versions/v24.16.0/installation/lib/node_modules/vscode-css-languageserver-bin/css-server.js", "--stdio"],
+      "extensions": [".css", ".scss", ".less"]
+    },
+    "javascript": {
+      "command": ["/home/daniel/.local/share/fnm/node-versions/v24.16.0/installation/lib/node_modules/typescript-language-server/bin/typescript-language-server.js", "--stdio"],
+      "extensions": [".js", ".jsx", ".ts", ".tsx"]
+    },
+    "json": {
+      "command": ["/home/daniel/.local/share/fnm/node-versions/v24.16.0/installation/lib/node_modules/vscode-json-languageserver/bin/vscode-json-languageserver", "--stdio"],
+      "extensions": [".json"]
+    },
+    "yaml": {
+      "command": ["/home/daniel/.local/share/fnm/node-versions/v24.16.0/installation/lib/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio"],
+      "extensions": [".yaml", ".yml"]
+    },
+    "markdown": {
+      "command": [
+        "node",
+        "/home/daniel/.local/share/fnm/node-versions/v22.22.3/installation/lib/node_modules/remark-language-server/index.js",
+        "--stdio"
+      ],
+      "extensions": [".md"]
+    },
+    "php": {
+      "command": ["intelephense"],
+      "extensions": [".php"]
+    },
+    "python": {
+      "command": ["pyright"],
+      "extensions": [".py"]
+    },
+    "bash": {
+      "command": ["bash-language-server", "start"],
+      "extensions": [".sh", ".bash"]
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
+      "enabled": true
+    },
+    "git": {
+      "type": "local",
+      "command": ["python", "-m", "mcp_server_git"],
+      "enabled": true
+    },
+    "memory": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "enabled": true
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "enabled": true
+    },
+    "grep": {
+      "type": "remote",
+      "url": "https://mcp.grep.app",
+      "enabled": true
+    },
+    "filesystem": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/daniel"
+      ],
+      "enabled": true
+    },
+    "microsoft-learn": {
+      "type": "remote",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "enabled": true
+    },
+    "radzen-blazor": {
+      "type": "local",
+      "command": ["node", "/home/daniel/.agents/skills/radzen-mcp/index.js"],
+      "enabled": true
+    },
+    "mudblazor": {
+      "type": "local",
+      "command": ["node", "/home/daniel/.agents/skills/mudblazor-mcp/index.js"],
+      "enabled": true
+    },
+    "fluentui": {
+      "type": "local",
+      "command": ["node", "/home/daniel/.agents/skills/fluentui-mcp/index.js"],
+      "enabled": true
+    },
+    "lsp-mcp": {
+      "type": "local",
+      "command": ["lsp-mcp"],
+      "enabled": true,
+      "timeout": 30000
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "tail_turns": 3
+  },
+  "autoupdate": "notify"
+}

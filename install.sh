@@ -15,10 +15,12 @@ RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC
 # ── Parse args ────────────────────────────────────────────────
 DRY_RUN=false
 FORCE=false
+SKIP_LSPS=false
 while [[ "$#" -gt 0 ]]; do case $1 in
     --dry-run) DRY_RUN=true ;;
     --force|-f) FORCE=true ;;
-    --help|-h) echo "Usage: $0 [--dry-run] [--force]"; exit 0 ;;
+    --skip-lsps) SKIP_LSPS=true ;;
+    --help|-h) echo "Usage: $0 [--dry-run] [--force] [--skip-lsps]"; exit 0 ;;
     *) echo "Unknown: $1"; exit 1 ;;
 esac; shift; done
 
@@ -270,11 +272,15 @@ if [ -f "$CONFIG_DIR/opencode.json" ]; then
 fi
 
 # ── 6. Install LSPs ───────────────────────────────────────────
-echo -e "\n${YELLOW}📦 Instalando LSPs faltantes...${NC}"
-if [ -x "$SCRIPT_DIR/setup-lsps.sh" ]; then
-    bash "$SCRIPT_DIR/setup-lsps.sh"
+if [ "$SKIP_LSPS" = false ]; then
+    echo -e "\n${YELLOW}📦 Instalando LSPs faltantes...${NC}"
+    if [ -x "$SCRIPT_DIR/setup-lsps.sh" ]; then
+        bash "$SCRIPT_DIR/setup-lsps.sh" || echo -e "  ${YELLOW}  ⚠ setup-lsps.sh falló (no crítico, algunos LSPs pueden faltar)${NC}"
+    else
+        echo -e "  ⚠ setup-lsps.sh no encontrado"
+    fi
 else
-    echo -e "  ⚠ setup-lsps.sh no encontrado"
+    echo -e "\n${YELLOW}⏭ Instalación de LSPs saltada (--skip-lsps)${NC}"
 fi
 
 # ── 7. Create version file ────────────────────────────────────

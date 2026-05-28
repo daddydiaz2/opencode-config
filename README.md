@@ -2,112 +2,177 @@
 
 <div align="center">
 
-![OpenCode](https://img.shields.io/badge/OpenCode-Professional-2563eb?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.0.0-blue?style=for-the-badge)
+![OpenCode](https://img.shields.io/badge/OpenCode-1.15.11-2563eb?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-![Shell](https://img.shields.io/badge/Shell-Bash-4EAA25?style=for-the-badge)
+![Security](https://img.shields.io/badge/Security-Scoped-success?style=for-the-badge)
 
-**Configuración profesional multi-proyecto para OpenCode AI**
+**Configuración Enterprise Multi-Proyecto para OpenCode AI**
 
-*Domina cualquier stack tecnológico con detección automática, LSPs potentes y skills inteligentes.*
+*Seguridad, monitoreo, auto-detección inteligente y rollback automático*
 
-[Características](#-características) •
-[Instalación](#-instalación-rápida) •
-[Documentación](#-documentación) •
-[Contribuir](#-contribuir)
+[Instalación](#-instalación-rápida) • [Features](#-features) • [Seguridad](#-seguridad) • [Health](#-health-monitoring) • [FAQ](#-faq)
 
 </div>
 
 ---
 
-## 🎯 Problema que Resuelve
+## 📋 Tabla de Contenidos
 
-> *"Cada proyecto tiene su propio stack, sus propias convenciones. ¿Por qué tu AI assistant no las detecta automáticamente?"*
-
-**Desafíos comunes:**
-- ❌ Cambias de proyecto Python a .NET y pierdes autocompletado
-- ❌ Tienes que reconfigurar LSPs en cada máquina
-- ❌ Los skills no se cargan según el framework (Radzen, MudBlazor, React)
-- ❌ Comentarios de código insuficientes, sin análisis profesional
-- ❌ Respuestas verbose que consumen tokens innecesarios
-
-**Con esta config:**
-- ✅ Detección automática de stack y frameworks
-- ✅ LSPs funcionando en cualquier proyecto
-- ✅ Skills generados por `npx autoskills` según tecnología
-- ✅ Código comentado profesionalmente
-- ✅ Modo caveman para máxima eficiencia de tokens
+- [🚀 OpenCode Config](#-opencode-config)
+  - [📋 Tabla de Contenidos](#-tabla-de-contenidos)
+  - [✨ Features](#-features)
+  - [🛡️ Seguridad](#️-seguridad)
+  - [🏥 Health Monitoring](#-health-monitoring)
+  - [🧠 Inteligencia de Proyecto](#-inteligencia-de-proyecto)
+  - [⚡ Instalación Rápida](#-instalación-rápida)
+  - [📖 Uso](#-uso)
+  - [🔧 Configuración](#-configuración)
+  - [🔄 Actualización y Rollback](#-actualización-y-rollback)
+  - [🐛 Troubleshooting](#-troubleshooting)
+  - [🤝 Contribuir](#-contribuir)
+  - [📄 Licencia](#-licencia)
 
 ---
 
-## ✨ Características
+## ✨ Features
 
-### 🌐 Auto-Detección Inteligente
+### 🔒 Seguridad Enterprise
+- **Filesystem Scoped**: MCP filesystem limitado al workspace actual (no acceso global)
+- **Backup Automático**: Backup antes de cualquier cambio
+- **Rollback Instantáneo**: Vuelve a versión anterior si algo falla
 
+### 🏥 Health Monitoring
+- **LSP Health Checks**: Verificación automática de Language Servers
+- **Circuit Breaker**: Timeout inteligente (45s → retry → fallback)
+- **Self-Healing**: Reinicio automático de LSPs caídos
+
+### 🧠 Inteligencia de Proyecto
+- **Auto-detección de Frameworks**: Radzen, MudBlazor, React, Vue, Angular, Django, etc.
+- **Detección de Arquitectura**: Clean Architecture, MVC, Microservicios, Monorepo
+- **Detección de Patrones**: CQRS, MediatR, Repository, Unit of Work
+- **Sugerencias Inteligentes**: Recomienda skills basado en stack detectado
+
+### 🛠️ LSPs Configurados
+
+| Lenguaje | LSP | Estado | Fallback |
+|----------|-----|--------|----------|
+| C# | OmniSharp | ✅ | lsp-mcp |
+| Razor / Blazor | vscode-html-ls | ✅ | - |
+| Python | pyright | ✅ | - |
+| PHP | intelephense | ✅ | - |
+| JavaScript / TypeScript | typescript-language-server | ✅ | - |
+| HTML / CSS / JSON | vscode-{html,css,json}-ls | ✅ | - |
+| YAML | yaml-language-server | ✅ | - |
+| Markdown | remark-language-server | ✅ | - |
+| Bash | bash-language-server | ✅ | - |
+| Go | gopls | ⚠️ Requiere instalar | - |
+| Rust | rust-analyzer | ⚠️ Requiere instalar | - |
+
+---
+
+## 🛡️ Seguridad
+
+### Scope de Filesystem MCP
+
+**Antes (Inseguro):**
+```json
+"filesystem": {
+  "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/daniel"]
+}
 ```
-Proyecto .NET + Radzen     → Carga radzen-blazor MCP automáticamente
-Proyecto .NET + MudBlazor  → Carga mudblazor MCP automáticamente
-Proyecto React/Vue/Angular → Carga skills de frontend
-Proyecto Python             → Activa pyright LSP
-Proyecto PHP                 → Activa intelephense LSP
+❌ Acceso a TODO el home del usuario
+
+**Ahora (Seguro):**
+```json
+"filesystem": {
+  "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "."]
+}
+```
+✅ Solo acceso al workspace actual
+
+### Backup Automático
+
+Cada cambio crea backup automático:
+```bash
+~/.config/opencode.backups/
+├── pre-update-20240528_143022/
+├── pre-update-20240528_152145/
+└── manual-20240528_160000/
 ```
 
-### 🔧 Language Servers (LSPs)
+---
 
-| Lenguaje | LSP | Estado |
-|----------|-----|--------|
-| C# / ASP.NET Core | lsp-mcp | ✅ |
-| Razor / Blazor | vscode-html-ls | ✅ |
-| Python | pyright | ✅ |
-| PHP | intelephense | ✅ |
-| JavaScript / TypeScript | typescript-language-server | ✅ |
-| HTML / CSS / JSON | vscode-{html,css,json}-ls | ✅ |
-| YAML | yaml-language-server | ✅ |
-| Markdown | remark-language-server | ✅ |
-| Bash | bash-language-server | ✅ |
+## 🏥 Health Monitoring
 
-### 🤖 Model Context Protocol (MCP)
-
-**Universales (siempre activos):**
-- `context7` — Documentación actualizada de librerías
-- `git` — Control de versiones
-- `memory` — Memoria persistente entre sesiones
-- `filesystem` — Acceso a archivos del proyecto
-
-**Auto-detectados por proyecto:**
-- `radzen-blazor` — Componentes Radzen
-- `mudblazor` — Componentes MudBlazor
-- `fluentui` — Validación FluentValidation
-
-### 🎓 Skills Automáticos
+### Comandos de Health Check
 
 ```bash
-npx autoskills
+# Verificar salud de todos los LSPs
+./lsp-health-check.sh
+
+# Verificar salud general
+./opencode-config-manager.sh health
+
+# Status completo
+./opencode-config-manager.sh status
 ```
 
-Detecta automáticamente el stack del proyecto e instala los mejores skills:
+### Circuit Breaker Pattern
 
-| Tecnología | Skills Instalados |
-|------------|-------------------|
-| .NET / C# | dotnet-best-practices, csharp-async, aspnet-core |
-| Python | python-*, django-*, fastapi-* |
-| React | react-best-practices, next-* |
-| Vue | vue-*, nuxt-* |
-| PHP | laravel-*, php-* |
+```
+LSP falla → Retry 1 (5s) → Retry 2 (10s) → Fallback → Notify user
+```
 
-### 💬 Modos de Comunicación
+### Monitoreo Automático
 
-#### Modo Profesional (Español)
-Siempre antes de actuar:
-1. **Análisis** — Problema, contexto, riesgos, impacto
-2. **Opciones** — 2-3 alternativas con pros/contras
-3. **Recomendación** — Enfoque sugerido con razonamiento
-4. **Espera confirmación** antes de ejecutar
+- **Timeout**: 45 segundos máximo por LSP
+- **Retry**: 2 intentos antes de fallback
+- **Fallback**: OmniSharp → lsp-mcp → syntax básico
+- **Logging**: Todos los errores en `~/.config/opencode/logs/`
 
-#### Modo Caveman (Ultra-Comprimido)
-- ~75% reducción de tokens
-- Elimina artículos, filler, hedging
-- Mantiene precisión técnica absoluta
-- Ideal para sesiones largas
+---
+
+## 🧠 Inteligencia de Proyecto
+
+### Detección de Arquitectura
+
+```bash
+./detect-frameworks.sh /tu-proyecto
+```
+
+**Detecta automáticamente:**
+
+| Patrón | Indicadores |
+|--------|-------------|
+| **Clean Architecture** | `Domain/`, `Application/`, `Infrastructure/` |
+| **MVC** | `Controllers/`, `Models/`, `Views/` |
+| **Microservices** | Múltiples `.csproj` + `Services/` |
+| **API / Minimal API** | `Program.cs` sin `Views/` |
+| **Monorepo** | `pnpm-workspace.yaml`, `lerna.json` |
+
+### Frameworks Soportados
+
+** .NET:**
+- Radzen.Blazor → radzen-blazor MCP
+- MudBlazor → mudblazor MCP
+- FluentValidation → fluentui MCP
+- MediatR → CQRS patterns
+- SignalR → Tiempo real
+- gRPC → APIs de alto rendimiento
+
+**Node.js:**
+- React, Vue, Angular, Next.js
+- TypeScript (auto-detectado)
+
+**Python:**
+- Django, Flask, FastAPI
+
+**Otros:**
+- Go (Gin, Echo)
+- Rust (Actix)
+- PHP (Laravel, Symfony)
+- Java (Spring Boot)
 
 ---
 
@@ -119,193 +184,193 @@ Siempre antes de actuar:
 curl -fsSL https://raw.githubusercontent.com/daddydiaz2/opencode-config/main/install.sh | bash
 ```
 
-### Por Proyecto
+### Instalación Manual
 
 ```bash
-# Detectar frameworks y configurar
-./detect-frameworks.sh /ruta/proyecto
+# 1. Clonar repo
+git clone https://github.com/daddydiaz2/opencode-config.git
+cd opencode-config
 
-# O inicialización completa con autoskills
-./init-project.sh
+# 2. Instalar
+chmod +x install.sh
+./install.sh
+
+# 3. Verificar instalación
+./opencode-config-manager.sh health
 ```
 
 ---
 
-## 📖 Documentación
+## 📖 Uso
+
+### Inicializar Nuevo Proyecto
+
+```bash
+cd /tu-proyecto
+./init-project.sh
+```
+
+**Esto hace:**
+1. 🔍 Detecta frameworks y arquitectura
+2. 📦 Ejecuta `npx autoskills`
+3. 📝 Genera `.opencode/mcp.json` con MCPs específicos
+4. 📊 Genera `.opencode/analysis.json` con análisis completo
+
+### Manager de Config
+
+```bash
+# Crear backup manual
+./opencode-config-manager.sh backup
+
+# Listar backups disponibles
+./opencode-config-manager.sh list
+
+# Restaurar último backup
+./opencode-config-manager.sh restore
+
+# Restaurar versión específica
+./opencode-config-manager.sh restore pre-update-20240528_143022
+
+# Actualizar a última versión
+./opencode-config-manager.sh update
+
+# Ver status
+./opencode-config-manager.sh status
+```
+
+---
+
+## 🔧 Configuración
 
 ### Estructura del Proyecto
 
 ```
 opencode-config/
-├── install.sh                 # Instalación global
-├── setup-lsps.sh             # Instalar Language Servers
-├── detect-frameworks.sh       # Detectar frameworks → cargar MCPs
-├── init-project.sh            # Inicializar proyecto completo
+├── install.sh                          # Instalación global
+├── opencode-config-manager.sh          # Manager (backup/restore/update)
+├── lsp-health-check.sh                 # Health checks de LSPs
+├── detect-frameworks.sh                # Detección inteligente
+├── init-project.sh                     # Inicializar proyecto
+├── setup-lsps.sh                       # Instalar Language Servers
 ├── configs/
-│   ├── global/              # Config que va a ~/.config/opencode/
-│   │   ├── opencode.json    # LSPs + MCPs universales
-│   │   └── agent/core/
-│   │       └── openagent.md # Prompt sistema (español + profesional)
-│   └── project-template/     # Template para nuevos proyectos
-└── .github/workflows/       # CI/CD
+│   ├── global/
+│   │   ├── opencode.json               # Config principal (LSPs + MCPs)
+│   │   └── agent/core/openagent.md     # Prompt sistema (español + profesional)
+│   └── project-template/
+│       └── .opencode/
+│           ├── mcp.json                # Template MCPs proyecto
+│           └── analysis.json           # Template análisis
+└── .github/workflows/
+    └── test.yml                        # CI/CD tests
 ```
 
-### Scripts Explicados
+### Configuración del Sistema
 
-| Script | Función | Cuándo usarlo |
-|--------|---------|--------------|
-| `install.sh` | Instalación global + LSPs | Una vez por máquina |
-| `setup-lsps.sh` | Instala pyright, intelephense, bash-ls | Una vez |
-| `detect-frameworks.sh` | Escanea deps → genera .opencode/mcp.json | Al cambiar de proyecto |
-| `init-project.sh` | Detecta + autoskills + estructura | Nuevo proyecto |
-
-### Configuración de LSPs
-
-Los LSPs se configuran en `~/.config/opencode/opencode.json`:
+**Archivo:** `~/.config/opencode/opencode.json`
 
 ```json
 {
   "lsp": {
     "csharp": {
-      "command": ["lsp-mcp"],
-      "extensions": [".cs"]
-    },
-    "python": {
-      "command": ["pyright"],
-      "extensions": [".py"]
+      "command": ["omnisharp", "-lsp"],
+      "extensions": [".cs"],
+      "timeout": 30000
+    }
+  },
+  "mcp": {
+    "filesystem": {
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "."],
+      "description": "Scoped to current workspace only"
     }
   }
 }
 ```
 
-### Agregar Nuevo Framework
-
-Edita `detect-frameworks.sh` y agrega el mapeo:
+### Variables de Entorno
 
 ```bash
-# En la sección .NET Projects
-if grep -rqi "MiFramework" "$PROJECT_DIR" 2>/dev/null; then
-    echo "  ✓ MiFramework → mi-framework MCP"
-    jq '.mcp.servers += ["mi-framework"]' "$MCP_FILE" > /tmp/mcp.json && mv /tmp/mcp.json "$MCP_FILE"
-fi
+# Opcional: API key para Context7
+export CONTEXT7_API_KEY="tu-api-key"
+
+# Opcional: Timeout personalizado para LSPs
+export LSP_TIMEOUT=45000
 ```
 
 ---
 
-## 🧪 Verificación
+## 🔄 Actualización y Rollback
 
-### Test de Instalación
+### Actualización Segura
 
 ```bash
-# Verificar LSPs instalados
-npm list -g pyright intelephense bash-language-server
+# Método 1: Manager automático
+./opencode-config-manager.sh update
 
-# Verificar MCPs activos
-opencode mcp list
-
-# Test LSP diagnostics (archivo vacío = sin errores)
-opencode debug lsp diagnostics tu-proyecto/Archivo.cs
+# Método 2: Manual con backup
+cp -r ~/.config/opencode ~/.config/opencode.backup.$(date +%s)
+cd /tmp/opencode-config && git pull && ./install.sh
 ```
 
-### Troubleshooting LSP
+### Rollback
 
-**Problema: No veo indicador visual de LSP activo**
-
-**Respuesta:** Es normal. Los LSPs trabajan silenciosamente en background. No hay indicador visual en la CLI.
-
-**Verificar que funciona:**
 ```bash
-# Test 1: Diagnostics en archivo existente
-opencode debug lsp diagnostics tu-proyecto/Archivo.cs
-# {} = sin errores, o {errors: [...]} = tiene errores
+# Si algo falló después de actualizar
+./opencode-config-manager.sh restore
 
-# Test 2: Crear error intencional y verificar que el LSP lo detecta
-# En un archivo .py escribe: print(
-# Guarda y ejecuta: opencode debug lsp diagnostics tu-archivo.py
-# Debe detectar el error de sintaxis
-
-# Test 3: Symbols (autocompletado)
-opencode debug lsp symbols TuClase
-# Debe listar símbolos del proyecto
+# O restaurar versión específica
+./opencode-config-manager.sh restore pre-update-20240528_143022
 ```
 
-**Problema: LSP no responde / se cuelga**
+---
+
+## 🐛 Troubleshooting
+
+### LSP no responde
 
 ```bash
-# Opción 1: Timeout del LSP (30s por defecto)
-# Los LSPs tienen timeout. Si un archivo es muy grande, puede expirar.
+# Verificar health
+./lsp-health-check.sh
 
-# Opción 2: Reiniciar session
+# Reiniciar opencode
 exit
-opencode
+opencode /tu-proyecto
 
-# Opción 3: Ver logs detallados
-opencode debug --log-level DEBUG
-# Ejecutar el comando que falló
-# Revisar los logs en stderr
+# Ver logs detallados
+cat ~/.local/share/opencode/log/*.log | grep ERROR
 ```
 
-**Problema: Autocompletado lento en archivos grandes**
+### Timeout en LSP
 
 ```bash
-# Los LSPs pueden ser lentos en archivos >1000 líneas
-# Solución: LSP solo analiza el archivo actual y imports
+# Verificar que OmniSharp funciona
+echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"processId":1234,"rootUri":"file:///tu-proyecto","capabilities":{},"clientInfo":{"name":"test","version":"1.0"},"protocolVersion":"2024-11-05"}}' | timeout 10 omnisharp -lsp
 
-# Para mejorar velocidad:
-# 1. Cerrar archivos innecesarios
-# 2. Usar navegación por símbolos en lugar de búsqueda global
-opencode debug lsp symbols miClase
+# Si falla, reinstalar
+./setup-lsps.sh
 ```
 
-### Troubleshooting MCP
+### MCP no carga
 
-**Verificar estado de MCPs:**
 ```bash
+# Verificar status
 opencode mcp list
-# ● = activo, ○ = inactivo, ✗ = error
-```
 
-**Debuggear MCP específico:**
-```bash
+# Debuggear específico
 opencode mcp debug <nombre-mcp>
-# Muestra logs detallados de conexión
+
+# Verificar filesystem scoped
+# Debe mostrar "." (workspace actual), no "/home/usuario"
 ```
 
-**MCPs no cargan:**
-```bash
-# Verificar que el comando existe
-which lsp-mcp
-which intelephense
-which pyright
-
-# Si no existe, reinstalar
-npm install -g pyright intelephense bash-language-server
-```
-
----
-
-## 🛠️ Desarrollo
-
-### Requisitos
-
-- Node.js 18+
-- Git
-- curl
-- npm (para LSPs adicionales)
-
-### Instalar desde Fuente
+### Restaurar configuración limpia
 
 ```bash
-git clone https://github.com/daddydiaz2/opencode-config.git
-cd opencode-config
+# Backup primero
+./opencode-config-manager.sh backup
+
+# Restaurar factory defaults
+rm -rf ~/.config/opencode
 ./install.sh
-```
-
-### Actualizar
-
-```bash
-cd ~/.config/opencode
-git pull origin main
 ```
 
 ---
@@ -313,36 +378,17 @@ git pull origin main
 ## 🤝 Contribuir
 
 1. Fork el repositorio
-2. Crea una branch (`git checkout -b feature/nueva-caracteristica`)
-3. Commit tus cambios (`git commit -m 'Agregar nueva característica'`)
-4. Push a la branch (`git push origin feature/nueva-caracteristica`)
-5. Abre un Pull Request
+2. Crea feature branch (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit cambios (`git commit -m 'feat: Agregar nueva funcionalidad'`)
+4. Push a branch (`git push origin feature/nueva-funcionalidad`)
+5. Abre Pull Request
 
----
+### Guías de Contribución
 
-## 📋清单 Checklist de Verificación
-
-### Después de instalar
-
-- [ ] `opencode mcp list` muestra los MCPs
-- [ ] `npm list -g pyright intelephense bash-language-server` confirma LSPs
-- [ ] `ls ~/.config/opencode/` tiene configs
-- [ ] En proyecto .NET: archivos `.cs` tienen syntax highlighting
-- [ ] En proyecto Python: archivos `.py` tienen autocompletado
-
-### En nuevo proyecto
-
-- [ ] `npx autoskills` se ejecuta sin errores
-- [ ] `.opencode/mcp.json` se genera
-- [ ] Skills aparecen en `.claude/skills/`
-- [ ] LSPs funcionan al editar archivos del stack
-
----
-
-## 📞 Soporte
-
-- 📝 Abre un [Issue](https://github.com/daddydiaz2/opencode-config/issues)
-- 💬 Discusiones en [GitHub Discussions](https://github.com/daddydiaz2/opencode-config/discussions)
+- Seguir [Conventional Commits](https://www.conventionalcommits.org/)
+- Incluir tests para nuevos features
+- Documentar cambios en README
+- Mantener compatibilidad hacia atrás
 
 ---
 
@@ -355,5 +401,7 @@ MIT © daddydiaz2
 <div align="center">
 
 **Hecho con ❤️ para desarrolladores profesionales**
+
+[⬆ Volver arriba](#-opencode-config)
 
 </div>

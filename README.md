@@ -506,4 +506,30 @@ python3 -c "import json; json.load(open('templates/opencode.json'))"
 
 [📥 Instalar Ahora](#-instalación-rápida) · [📖 Documentación](#-tabla-de-contenidos) · [🐛 Issues](https://github.com/daddydiaz2/opencode-config/issues)
 
+---
+
+## ☕ ¡Invítame a un Café!
+
+<div align="center">
+
+Si este proyecto te ha sido útil, considera invitarme a un café. ☕
+
+Cada donación me ayuda a seguir mejorando y manteniendo este proyecto para toda la comunidad.
+
+**Tu apoyo hace la diferencia.** 🙌
+
+<br>
+
+<a href="https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID" target="_blank">
+  <img src="https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="Donar con PayPal" />
+</a>
+
+<br>
+
+📧 O envía directamente a: **developerdanieldiaz@gmail.com**
+
+<br>
+
+> *"Un café, una idea. Un dono, un proyecto mejor."* ☕✨
+
 </div>

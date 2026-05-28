@@ -524,12 +524,6 @@ Cada donación me ayuda a seguir mejorando y manteniendo este proyecto para toda
   <img src="https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="Donar con PayPal" />
 </a>
 
-<br>
-
-📧 O envía directamente a: **developerdanieldiaz@gmail.com**
-
-<br>
-
 > *"Un café, una idea. Un dono, un proyecto mejor."* ☕✨
 
 </div>

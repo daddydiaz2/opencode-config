@@ -1,0 +1,257 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-antigravity-auth@latest"],
+  "provider": {
+    "google": {
+      "models": {
+        "antigravity-gemini-3-pro": {
+          "name": "Gemini 3 Pro (Antigravity)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": {
+            "low": { "thinkingLevel": "low" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
+        "antigravity-gemini-3.1-pro": {
+          "name": "Gemini 3.1 Pro (Antigravity)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": {
+            "low": { "thinkingLevel": "low" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
+        "antigravity-gemini-3-flash": {
+          "name": "Gemini 3 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": {
+            "minimal": { "thinkingLevel": "minimal" },
+            "low": { "thinkingLevel": "low" },
+            "medium": { "thinkingLevel": "medium" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
+        "antigravity-claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 (Antigravity)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "antigravity-claude-opus-4-6-thinking": {
+          "name": "Claude Opus 4.6 Thinking (Antigravity)",
+          "limit": { "context": 200000, "output": 64000 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": {
+            "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
+            "max": { "thinkingConfig": { "thinkingBudget": 32768 } }
+          }
+        },
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "gemini-3-flash-preview": {
+          "name": "Gemini 3 Flash Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "gemini-3-pro-preview": {
+          "name": "Gemini 3 Pro Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "gemini-3.1-pro-preview": {
+          "name": "Gemini 3.1 Pro Preview (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        },
+        "gemini-3.1-pro-preview-customtools": {
+          "name": "Gemini 3.1 Pro Preview Custom Tools (Gemini CLI)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
+        }
+      }
+    }
+  },
+  "reference": {
+    "dotnet": { "repository": "dotnet/docs", "branch": "main" },
+    "aspnetcore": { "repository": "dotnet/AspNetCore.Docs", "branch": "main" },
+    "blazor": { "repository": "dotnet/AspNetCore.Docs", "branch": "main" }
+  },
+  "command": {
+    "build": {
+      "template": "dotnet build --configuration Release",
+      "description": "Compilar proyecto Release"
+    },
+    "build-debug": {
+      "template": "dotnet build --configuration Debug",
+      "description": "Compilar proyecto Debug"
+    },
+    "test": {
+      "template": "dotnet test --configuration Release --no-build",
+      "description": "Ejecutar tests (requiere build previo)"
+    },
+    "test-all": {
+      "template": "dotnet test --configuration Release",
+      "description": "Compilar y ejecutar todos los tests"
+    },
+    "run": {
+      "template": "dotnet run",
+      "description": "Iniciar la aplicacion"
+    },
+    "watch": {
+      "template": "dotnet watch run",
+      "description": "Ejecutar con hot-reload"
+    },
+    "migration": {
+      "template": "dotnet ef migrations add {0}",
+      "description": "Crear migracion EF Core: /migration Nombre"
+    },
+    "database-update": {
+      "template": "dotnet ef database update",
+      "description": "Aplicar migraciones pendientes"
+    },
+    "restore": {
+      "template": "dotnet restore",
+      "description": "Restaurar paquetes NuGet"
+    },
+    "clean": {
+      "template": "dotnet clean",
+      "description": "Limpiar la solucion"
+    },
+    "add-package": {
+      "template": "dotnet add package {0}",
+      "description": "Agregar paquete NuGet: /add-package Nombre"
+    },
+    "scaffold": {
+      "template": "dotnet aspnet-codegenerator controller -name {0}Controller -m {1} -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --referenceScriptLibraries",
+      "description": "Scaffold controller: /scaffold NombreController Modelo"
+    },
+    "publish": {
+      "template": "dotnet publish --configuration Release -o ./publish",
+      "description": "Publicar la aplicacion"
+    },
+    "nuget-search": {
+      "template": "dotnet package search {0}",
+      "description": "Buscar paquete NuGet: /nuget-search termino"
+    },
+    "info": {
+      "template": "echo 'Project: $(basename $(pwd))'; echo 'SDK: $(dotnet --version 2>/dev/null || echo N/A)'",
+      "description": "Mostrar info del proyecto"
+    }
+  },
+  "formatter": {
+    "dotnet-format": {
+      "command": ["dotnet", "format", "--no-restore", "--include", "$FILE"],
+      "extensions": [".cs"]
+    },
+    "prettier": {
+      "command": ["prettier", "--write", "$FILE"],
+      "extensions": [
+        ".html", ".cshtml", ".razor", ".css", ".scss",
+        ".js", ".jsx", ".ts", ".tsx",
+        ".json", ".yaml", ".yml", ".md"
+      ]
+    }
+  },
+  "lsp": {
+    "csharp": {
+      "command": __LSP_CSHARP__,
+      "extensions": [".cs"]
+    },
+    "razor": {
+      "command": __LSP_RAZOR__,
+      "extensions": [".razor", ".cshtml"]
+    },
+    "html": {
+      "command": __LSP_HTML__,
+      "extensions": [".html"]
+    },
+    "css": {
+      "command": __LSP_CSS__,
+      "extensions": [".css", ".scss", ".less"]
+    },
+    "javascript": {
+      "command": __LSP_JAVASCRIPT__,
+      "extensions": [".js", ".jsx", ".ts", ".tsx"]
+    },
+    "json": {
+      "command": __LSP_JSON__,
+      "extensions": [".json"]
+    },
+    "yaml": {
+      "command": __LSP_YAML__,
+      "extensions": [".yaml", ".yml"]
+    },
+    "markdown": {
+      "command": __LSP_MARKDOWN__,
+      "extensions": [".md"]
+    },
+    "php": {
+      "command": __LSP_PHP__,
+      "extensions": [".php"]
+    },
+    "python": {
+      "command": __LSP_PYTHON__,
+      "extensions": [".py"]
+    },
+    "bash": {
+      "command": __LSP_BASH__,
+      "extensions": [".sh", ".bash"]
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
+      "enabled": true
+    },
+    "git": {
+      "type": "local",
+      "command": ["python", "-m", "mcp_server_git"],
+      "enabled": true
+    },
+    "memory": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "enabled": true
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "enabled": true
+    },
+    "grep": {
+      "type": "remote",
+      "url": "https://mcp.grep.app",
+      "enabled": true
+    },
+    "filesystem": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "."],
+      "enabled": true,
+      "description": "Scoped to current workspace only"
+    },
+    "microsoft-learn": {
+      "type": "remote",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "enabled": true
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "tail_turns": 3
+  },
+  "autoupdate": "notify"
+}

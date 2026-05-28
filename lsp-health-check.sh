@@ -1,97 +1,89 @@
 #!/bin/bash
+# lsp-health-check.sh — Verifica salud de LSPs configurados en opencode.json
 set -e
 
-# LSP Health Monitor
-# Checks all configured LSPs and reports status
+CONFIG_FILE="${HOME}/.config/opencode/opencode.json"
+HEALTH_LOG="${HOME}/.config/opencode/logs/lsp-health.log"
 
-CONFIG_DIR="$HOME/.config/opencode"
-OPENCODE_JSON="$CONFIG_DIR/opencode.json"
-HEALTH_LOG="$CONFIG_DIR/logs/lsp-health.log"
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC='\033[0m'
+OK="${GREEN}✓${NC}"; FAIL="${RED}✗${NC}"; WARN="${YELLOW}⚠${NC}"
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
+mkdir -p "$(dirname "$HEALTH_LOG")"
+log() { echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$HEALTH_LOG"; }
 
-mkdir -p "$CONFIG_DIR/logs"
-
-log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$HEALTH_LOG"
-}
-
-check_lsp() {
-    local name="$1"
-    local command="$2"
-    local extensions="$3"
-    
-    echo -n "Checking $name... "
-    
-    # Check if binary exists
-    if ! command -v "$command" >/dev/null 2>&1; then
-        echo -e "${RED}✗ Binary not found: $command${NC}"
-        log "ERROR: $name - Binary not found: $command"
-        return 1
-    fi
-    
-    # Test initialization with timeout
-    local test_result
-    if timeout 10 bash -c "echo '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"processId\":$$,\"rootUri\":\"file://$(pwd)\",\"capabilities\":{},\"clientInfo\":{\"name\":\"health-check\",\"version\":\"1.0\"},\"protocolVersion\":\"2024-11-05\"}}' | $command --stdio >/dev/null 2>&1 &" >/dev/null 2>&1; then
-        echo -e "${GREEN}✓ Healthy${NC}"
-        log "OK: $name - Responding"
-        return 0
-    else
-        echo -e "${YELLOW}⚠ Warning: Slow or no response${NC}"
-        log "WARN: $name - Slow/no response"
-        return 1
-    fi
-}
-
-# Parse opencode.json and check each LSP
-echo -e "${GREEN}🏥 LSP Health Check${NC}"
-echo "===================="
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${CYAN}  🏥 LSP Health Check${NC}"
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 
-if [ ! -f "$OPENCODE_JSON" ]; then
-    echo -e "${RED}✗ Config not found: $OPENCODE_JSON${NC}"
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo -e "${FAIL} Config no encontrado: $CONFIG_FILE"
     exit 1
 fi
 
-# Extract LSPs from config and check each one
-python3 << PYTHON_SCRIPT
-import json
-import subprocess
-import sys
+python3 << PYEOF
+import json, os, shutil, sys, subprocess, time
 
-with open("$OPENCODE_JSON") as f:
+OK_S = "[OK]"
+FAIL_S = "[FAIL]"
+WARN_S = "[WARN]"
+
+exit_code = 0
+
+with open(os.environ['CONFIG_FILE']) as f:
     config = json.load(f)
 
-lsps = config.get("lsp", {})
+lsps = config.get('lsp', {})
 total = len(lsps)
 healthy = 0
 issues = []
 
-for name, lsp_config in lsps.items():
-    command = lsp_config.get("command", [""])[0]
-    extensions = lsp_config.get("extensions", [])
-    
-    # Check if command exists
-    result = subprocess.run(["which", command], capture_output=True, text=True)
-    
-    if result.returncode == 0:
-        print(f"  ✓ {name:<15} ({', '.join(extensions)})")
-        healthy += 1
-    else:
-        print(f"  ✗ {name:<15} MISSING: {command}")
-        issues.append(name)
+print(f"  LSPs configurados: {total}")
+print()
 
-print(f"\n{healthy}/{total} LSPs healthy")
+for name in sorted(lsps.keys()):
+    lsp = lsps[name]
+    cmd = lsp.get('command', [])
+    if not cmd:
+        print(f"  {WARN_S} {name:<15} -> command vacio")
+        continue
+    
+    binary = cmd[0]
+    ext = ', '.join(lsp.get('extensions', []))
+    
+    # Check binary exists
+    found = shutil.which(binary) is not None
+    
+    # Check node script path
+    if binary == 'node' and len(cmd) > 1:
+        found = os.path.isfile(cmd[1])
+    
+    if found:
+        healthy += 1
+        print(f"  {OK_S} {name:<15} -> {binary:<25} [{ext}]")
+    else:
+        issues.append(name)
+        print(f"  {FAIL_S} {name:<15} -> {binary:<25} MISSING")
+        exit_code = 1
+
+print()
+print(f"  Resumen: {healthy}/{total} saludables")
 
 if issues:
-    print(f"\n⚠️  Missing LSPs: {', '.join(issues)}")
-    print("Run: ./setup-lsps.sh")
-    sys.exit(1)
+    print(f"\n  {WARN_S} Faltan {len(issues)} LSPs:")
+    for name in issues:
+        print(f"     - {name}")
+    print(f"\n  Corre: ./setup-lsps.sh")
 else:
-    print("\n✅ All LSPs operational!")
-    sys.exit(0)
-PYTHON_SCRIPT
+    print(f"\n  {OK_S} {GREEN}Todos los LSPs operativos{NC if os.isatty(0) else ''}")
+
+# Log health
+with open(os.environ['HEALTH_LOG'], 'a') as log:
+    log.write(f"Health check: {healthy}/{total} healthy, issues: {len(issues)}\n")
+
+sys.exit(exit_code)
+PYEOF
+
+echo ""
+echo -e "${CYAN}Log: $HEALTH_LOG${NC}"
+echo ""

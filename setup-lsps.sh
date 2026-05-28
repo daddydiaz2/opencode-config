@@ -92,13 +92,13 @@ fi
 
 # ── 2-4. LSPs vscode (HTML/CSS/JSON) ──────────────────────
 echo -e "\n\033[1;34mWeb (HTML / CSS / JSON)\033[0m"
-install_npm_path "vscode-html-languageserver-bin" "vscode-html-languageserver-bin/html-server.js"
-install_npm_path "vscode-css-languageserver-bin" "vscode-css-languageserver-bin/css-server.js"
+install_npm_path "vscode-html-languageserver-bin" "vscode-html-languageserver-bin/htmlServerMain.js"
+install_npm_path "vscode-css-languageserver-bin" "vscode-css-languageserver-bin/cssServerMain.js"
 install_npm_path "vscode-json-languageserver" "vscode-json-languageserver/bin/vscode-json-languageserver"
 
 # ── 5. TypeScript / JavaScript ─────────────────────────────
 echo -e "\n\033[1;34mJavaScript / TypeScript\033[0m"
-install_npm_path "typescript-language-server" "typescript-language-server/bin/typescript-language-server.js"
+install_npm_path "typescript-language-server" "typescript-language-server/lib/cli.mjs"
 install_npm "typescript" "tsc"
 
 # ── 6. YAML ────────────────────────────────────────────────

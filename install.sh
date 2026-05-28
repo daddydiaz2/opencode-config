@@ -91,13 +91,13 @@ echo -e "  jq: ${HAS_JQ}"
 # Resolve each LSP
 LSP_CSHARP=$(resolve_lsp "omnisharp" "" "-lsp" "false")
 echo -e "  LSP csharp: ${LSP_CSHARP:-MISSING}"
-LSP_RAZOR=$(resolve_lsp "vscode-html-languageserver" "vscode-html-languageserver-bin/html-server.js" "--stdio" "true")
+LSP_RAZOR=$(resolve_lsp "html-languageserver" "vscode-html-languageserver-bin/htmlServerMain.js" "--stdio" "true")
 echo -e "  LSP razor: $(echo "$LSP_RAZOR" | head -c 60)..."
-LSP_HTML=$(resolve_lsp "vscode-html-languageserver" "vscode-html-languageserver-bin/html-server.js" "--stdio" "true")
+LSP_HTML=$(resolve_lsp "html-languageserver" "vscode-html-languageserver-bin/htmlServerMain.js" "--stdio" "true")
 echo -e "  LSP html: $(echo "$LSP_HTML" | head -c 60)..."
-LSP_CSS=$(resolve_lsp "vscode-css-languageserver" "vscode-css-languageserver-bin/css-server.js" "--stdio" "true")
+LSP_CSS=$(resolve_lsp "css-languageserver" "vscode-css-languageserver-bin/cssServerMain.js" "--stdio" "true")
 echo -e "  LSP css: $(echo "$LSP_CSS" | head -c 60)..."
-LSP_JAVASCRIPT=$(resolve_lsp "typescript-language-server" "typescript-language-server/bin/typescript-language-server.js" "--stdio" "true")
+LSP_JAVASCRIPT=$(resolve_lsp "typescript-language-server" "typescript-language-server/lib/cli.mjs" "--stdio" "true")
 echo -e "  LSP javascript: $(echo "$LSP_JAVASCRIPT" | head -c 60)..."
 LSP_JSON=$(resolve_lsp "vscode-json-languageserver" "vscode-json-languageserver/bin/vscode-json-languageserver" "--stdio" "true")
 echo -e "  LSP json: $(echo "$LSP_JSON" | head -c 60)..."
